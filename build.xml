@@ -1,0 +1,41 @@
+
+<project name="OpenSky WebService docroot project" basedir=".">
+
+    <!-- ===================== Property Definitions ===========================
+
+        Each of the following properties are used in the build script.
+        Values for these properties are set by the first place they are
+        defined, from the following list:
+        * Definitions on the "ant" command line (ant -Dcatalina.home=xyz compile)
+        * Definitions from a "xxx.properties" file as described below
+        * Default definitions in this build.xml file
+
+        You will note below that property values can be composed based on the
+        contents of previously defined properties.  This is a powerful technique
+        that helps you minimize the number of changes required when your development
+        environment is modified.  Note that property composition is allowed within
+        "build.properties" files as well as in the "build.xml" script.
+
+    -->
+
+    <!-- The following properties files are sourced in the following order  -->
+
+    <!-- local properties should be placed in one of these files (only one should be used): -->
+
+    <property file="../osws_root.properties"/>
+
+    <target name="deploy"
+            description="Deploy osws_root file to osws.root.home">
+
+        <!-- Copy files -->
+        <mkdir     dir="${osws.root.home}"/>
+
+        <!--insert config params in web.xml-->
+        <copy todir="${osws.root.home}"  preservelastmodified="true">
+            <fileset dir="." >
+                <include name="**/*.html" />
+                <include name="**/*.js" />
+            </fileset>
+        </copy>
+    </target>
+</project>
