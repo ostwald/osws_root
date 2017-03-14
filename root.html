@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>OSWS</title>
+    <title>OSWS Landing Page</title>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="root-styles.css">
@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
     <script src="base-script.js"></script>
+    <script src="config.js"></script>
 
     <script type="text/javascript">
 
@@ -21,10 +22,10 @@
             },
             'osws' : {
                 'osws_context': 'service',
-	        'submit_context': 'opensky'
+	            'submit_context': 'opensky'
             }
         }
-        var HOST = 'localhost' // localhost | osws
+        // var HOST = 'localhost' // localhost | osws
         var DOCROOT = window.location.origin
         var TOOMCAT_ORIGIN = window.location.origin
         var CONFIG = CONFIG_MAP[HOST]
@@ -41,18 +42,19 @@
 </head>
 <body>
 
-<h1>OpenSky Webservice</h1>
-<p class="welcome">Welcome to <span class="baseUrl">foo</span> - the OpenSky Web Service Landing Page</p>
+<h1>OpenSky Services at <span class="baseUrl"></span> </h1>
+<p class="welcome">Welcome to the OpenSky Services Landing Page. Below are the services and endpoints available on this host.</p>
 
-<div id="accordion">
-    <h3 id="osws">OpenSky Webservice (OSWS) API</h3>
+<div id="osws-endpoints">
+    <h3 id="osws">OSWS Search API</h3>
     <div>
         <p class="one-liner">A REST search service API that supports solr query syntax</p>
-        <p class="description">The OSWS service underlies many of the tools and services
+        <p class="description">The OSWS search service underlies many of the tools and apps
             described on this page. </p>
 
-        <p class="description"> Here is an example request  <a href="http://osws.ucar.edu/service/search/v1?q=any_field:climate">http://osws.ucar.edu/service/search/v1?q=any_field:climate</a>.
-            <br/>Click the link to see what a OSWS response looks like.</p>
+        <p class="description"> Here is an example request  <a href="http://osws.ucar.edu/service/search/v1?q=any_field:climate">http://osws.ucar.edu/service/search/v1?q=any_field:climate</a> -
+
+            Click the link to see what a OSWS response looks like.</p>
 
         <p class="info">To learn more, see
             <a href="https://docs.google.com/document/d/1Fp8U8dfi6_mF1RWOHHfCbkUWsruFUKOKf_GR_CneGA0">OSWS API documentation</a></p>
@@ -100,6 +102,26 @@
     </div>
 </div>
 
+<div id="devel-endpoints" style="display:none;">
+    <h3 id="nldr-resolver">NLDR Resolver</h3>
+    <div>
+        <p class="one-liner">Resolves Legacy NLDR Citable URLs by redirecting to OpenSky.</p>
+        <p class="description">Click the following legacy URL to be directed to
+        the corresponding OpenSky resource -
+        <a href="http://oswscl.dls.ucar.edu:8688/resolver/collections/WMW-000-000-000-057">http://oswscl.dls.ucar.edu:8688/resolver/collections/WMW-000-000-000-057</a>
+        </p>
+    </div>
+
+    <h3 id="mics">MiCS - NLDR Catalog</h3>
+    <div>
+        <p class="one-liner">NLDR Catalog used by library staff as part of ongoing migration operations</p>
+    </div>
+
+    <h3 id="nldr-dds">NLDR DDS</h3>
+    <div>
+            <p class="one-liner">NLDR Discovery system managing the contents of MiCS</p>
+    </div>
+<div>
 </body>
 <script>
     $(function () {
@@ -109,8 +131,12 @@
 
         $('.baseUrl').html(window.location.host);
 
+        if (DEVEL) {
+            $('#devel-endpoints').show();
+        }
+
         if (ACCORDION) {
-            $('#accordion').accordion({
+            $('#osws-endpoints').accordion({
                 collapsible:true
             });
         }
@@ -155,6 +181,19 @@
                     window.location = DOCROOT + '/cite';
                 })
                 .addClass('initialized');
+
+            $('#mics')
+                    .click (function (event) {
+                        window.location = DOCROOT + '/dcs';
+                    })
+                    .addClass('initialized');
+
+            $('#nldr-dds')
+                    .click (function (event) {
+                        window.location = DOCROOT + '/dds';
+                    })
+                    .addClass('initialized');
+
         }
 
     })
