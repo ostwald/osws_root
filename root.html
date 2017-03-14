@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>OSWS</title>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="root-styles.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script src="base-script.js"></script>
+
+    <script type="text/javascript">
+
+        var CONFIG_MAP = {
+            'localhost' : {
+                'osws_context': 'osws',
+                'osws_port' : '8080',
+	        'submit_context': 'submit'
+            },
+            'osws' : {
+                'osws_context': 'service',
+	        'submit_context': 'opensky'
+            }
+        }
+        var HOST = 'localhost' // localhost | osws
+        var DOCROOT = window.location.origin
+        var TOOMCAT_ORIGIN = window.location.origin
+        var CONFIG = CONFIG_MAP[HOST]
+        if (CONFIG.osws_port) {
+            TOOMCAT_ORIGIN += ':' + CONFIG.osws_port
+        }
+        var OWSW_CONTEXT_URL = TOOMCAT_ORIGIN + '/' + CONFIG.osws_context;
+        var SUBMIT_CONTEXT_URL = TOOMCAT_ORIGIN + '/' + CONFIG.submit_context;
+        log ("OWSW_CONTEXT_URL: " + OWSW_CONTEXT_URL)
+
+        var ACCORDION = 0;
+
+      </script>
+</head>
+<body>
+
+<h1>OpenSky Webservice</h1>
+<p class="welcome">Welcome to <span class="baseUrl">foo</span> - the OpenSky Web Service Landing Page</p>
+
+<div id="accordion">
+    <h3 id="osws">OpenSky Webservice (OSWS) API</h3>
+    <div>
+        <p class="one-liner">A REST search service API that supports solr query syntax</p>
+        <p class="description">The OSWS service underlies many of the tools and services
+            described on this page. </p>
+
+        <p class="description"> Here is an example request  <a href="http://osws.ucar.edu/service/search/v1?q=any_field:climate">http://osws.ucar.edu/service/search/v1?q=any_field:climate</a>.
+            <br/>Click the link to see what a OSWS response looks like.</p>
+
+        <p class="info">To learn more, see
+            <a href="https://docs.google.com/document/d/1Fp8U8dfi6_mF1RWOHHfCbkUWsruFUKOKf_GR_CneGA0">OSWS API documentation</a></p>
+    </div>
+    <h3 id="explorer">OSWS Explorer</h3>
+    <div>
+        <p class="one-liner">A graphical interface for interacting with the OSWS API</p>
+        <p class="description">A query-builder supports construction of complex queries. Queries can be annotated, edited and shared.
+    Search Results provide access to underlying data and indexes, including MODS, foxml, solr, and openSky</p>
+
+        <p class="info">To learn more, see
+            <a href="https://docs.google.com/document/d/1oZlQfy_1VKuhiih_macVacwuPx7i5I80CsiG5yVpej4/edit#heading=h.gzdn5l74qyam">OSWS Explorer</a></p>
+    </div>
+
+    <h3 id="admin">Admin Reporting tool</h3>
+    <div>
+        <p class="one-liner">Supports searching and reporting over OpenSky research collections</p>
+        <p class="description">Another osws service client with a graphical interface, the admin reporting
+    tool has a query-builder tool similar to the Explorer, but oriented toward administrative searching needs
+    and emphasizing collaboration and peer review metadata.
+    The Admin Reporting tool creates formatted citation lists for search results, and downloads lists as Word documents.</p>
+    </div>
+    <h3 id="affil">Affiliation Helper</h3>
+    <div>
+        <p class="one-liner">A cataloging aid that searches UCAR PeopleDB to find the affiliation of UCAR employees</p>
+    </div>
+    <h3 id="submit">OpenSky Submission Form</h3>
+    <div>
+        <p class="one-liner">Accepts user uploads to OpenSky repository</p>
+        <p class="description">Part of OpenSky Website, this tool allows them to upload documents and metadata
+            for inclusion in the repository</p>
+    </div>
+    <h3 id="arkmint">Ark Minter</h3>
+    <div>
+        <p class="one-liner">Used in the ingest process to assign ARK identifiers to OpenSky resources</p>
+    </div>
+    <h3 id="citation">Citation</h3>
+    <div>
+        <p class="one-liner">Provides formatted bibliographic citations (as HTML) for OpenSky resources</p>
+        <p class="description">Supports the Admin Reporting tool to include formatted biblioraphic
+        citations in reports</p>
+        <p class="description"></p>
+        <p class="info">To see a simple response,
+            <a href="https://osws.ucar.edu/cite/">click here</a></p>
+    </div>
+</div>
+
+</body>
+<script>
+    $(function () {
+
+
+        console.log(window.location)
+
+        $('.baseUrl').html(window.location.host);
+
+        if (ACCORDION) {
+            $('#accordion').accordion({
+                collapsible:true
+            });
+        }
+        else {
+            $('#osws')
+                .click (function (event) {
+                    window.location = OWSW_CONTEXT_URL;
+                })
+                .addClass('initialized');
+
+            $('#explorer')
+                .click (function (event) {
+                    window.location = OWSW_CONTEXT_URL + '/explorer/osws';
+                })
+                .addClass('initialized');
+
+            $('#admin')
+                .click (function (event) {
+                    window.location = OWSW_CONTEXT_URL + '/admin';
+                })
+                .addClass('initialized');
+
+            $('#affil')
+                .click (function (event) {
+                    window.location = OWSW_CONTEXT_URL + '/affil';
+                })
+                .addClass('initialized');
+
+            $('#submit')
+                .click (function (event) {
+                    window.location = SUBMIT_CONTEXT_URL + '/submit.do';
+                })
+                .addClass('initialized');
+
+            $('#citation')
+                .click (function (event) {
+                    window.location = DOCROOT + '/cite';
+                })
+                .addClass('initialized');
+            $('#arkmint')
+                .click (function (event) {
+                    window.location = DOCROOT + '/cite';
+                })
+                .addClass('initialized');
+        }
+
+    })
+
+</script>
+</html>
